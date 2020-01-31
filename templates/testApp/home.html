@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% extends "testApp/base.html"%}
+  {% block body_block %}
+    {% for p in product %}
+     <div class="container center">
+       <img class="center" src="{{p.item_image.url}}" height="200 px" alt="image will be uploaded soon">
+       <h2>PRODUCT NAME :{{p.item_name}} </h2>
+       <h2>PRODUCT DETAILS :{{p.item_detail}} </h2>
+       <h2>PRODUCT PRICE :{{p.item_price}} </h2>
+       <div class="btn-group" role="group" aria-label="...">
+         <a href="/cart/{{p.id}}"class="btn btn-default btn-primary btn-lg">Add To Cart</a>
+         <a href="/order"class="btn btn-default btn-primary btn-lg">Buy Now</a><hr><hr><hr>
+       </div>
+     </div>
+    {% endfor %}
+  {% endblock %}

@@ -1,0 +1,54 @@
+{% extends "testApp/base.html"%}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+    {% block body_block %}
+    <form method="post" action="/order/">
+      {% csrf_token %}
+      <div class="container" align='right'>
+        <p>LOGIN ID:{{user.id}}</p>
+        <p>LOGIN NAME:{{user.username|title}}</p>
+        <p>EMAIL:{{user.email}}</p>
+      </div>
+    <div class="container" align="center">
+      <h2>Hello {{user.username|upper}}, Your order is going to confirmed. Just click on the payment button..</h2>
+      <table border="5">
+        <thead>
+          <th> PRODUCT ID </th>
+          <th> PRODUCT IMAGE </th>
+          <th> PRODUCT NAME </th>
+          <th> PRODUCT PRICE IN RUPEES </th>
+          <th> No. OF PRODUCT</th>
+          <th> Amount</th>
+        </thead>
+        {% for cart in cart %}
+        <tr>
+          <td>{{cart.id}}</td>
+          <td><a><img alt="Image will be uploaded soon" src="{{cart.product.item_image.url}}" height="80px;"/></a></td>
+          <td>{{cart.product.item_name}}</td>
+          <td>{{cart.product.item_price}}</td>
+          <td>{{cart.quantity}}</td>
+          <td>{{cart.amount}}</td>
+        </tr>
+        {% endfor %}
+      </table><hr>
+      <table border="5">
+        <thead>
+          <th> TOTAL AMOUNT</th>
+        </thead>
+        <tr>
+          <td>RS {{grand_total}}</td>
+        </tr>
+      </table><br>
+      <input name="grandTotal" value="{{grand_total}}" hidden>
+      <button class="btn btn-primary" type="submit" name="button">Make Payment</button><hr>
+    </div>
+    </form>
+    {% endblock %}
+  </body>
+</html>

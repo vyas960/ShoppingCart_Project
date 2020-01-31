@@ -1,0 +1,44 @@
+{% extends "testApp/base.html"%}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    {% block body_block %}
+    <div class="container" align='right'>
+      <p>LOGIN ID:{{user.id}}</p>
+      <p>LOGIN NAME:{{user.username|title}}</p>
+      <p>EMAIL:{{user.email}}</p>
+    </div>
+    <div class="container" align="center">
+      <h2>Thank You {{user.username|upper}} for choosing us. Your order confirmed now. Within 3 days your order will get in place.</h2>
+      <hr><h3>PRODUCT SUMMARY</h3>
+      <table border="5" >
+
+        <thead>
+          <th> PRODUCT ID </th>
+          <th> PRODUCT IMAGE </th>
+          <th> PRODUCT NAME </th>
+          <th> PRODUCT PRICE </th>
+          <th> QUANTITY </th>
+          <th> AMOUNT </th>
+          <th> TOTAL PRICE </th>
+        </thead>
+        {% for order in order %}
+        <tr>
+          <td>{{order.product.id}}</td>
+          <td><a><img alt="Image will be uploaded soon" src="{{order.product.item_image.url}}" height="80px;"/></a></td>
+          <td>{{order.product.item_name}}</td>
+          <td>{{order.product.item_price}}</td>
+          <td>{{order.quantity}}</td>
+          <td>{{order.amount}}</td>
+          <td>{{order.grandTotal}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endblock %}
+  </body>
+</html>
