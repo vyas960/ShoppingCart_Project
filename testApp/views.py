@@ -12,15 +12,14 @@ def home_view(request):
 
 @login_required
 def addToCart_view(request,pk):
-	try:
-		cart=Cart.objects.filter(user=request.user)
+	cart=Cart.objects.filter(user=request.user)
+	if cart:
 		cart.delete()
-	except:
-		pass
-	finally:
-		product=Product.objects.get(pk=pk)
-		cart=Cart.objects.get_or_create(product=product,user=request.user)
-		return redirect("/cart")
+	product=Product.objects.get(pk=pk)
+	cart=Cart.objects.get_or_create(product=product,user=request.user)
+
+	return HttpResponseRedirect(reverse('cart'))
+	# return redirect("/cart")
 
 @login_required
 def cart_view(request):

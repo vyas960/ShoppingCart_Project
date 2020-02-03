@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', views.home_view),
     path('cart/<int:pk>/', views.addToCart_view),
-    path('cart/',views.cart_view),
+    path('cart/',views.cart_view,name="cart"),
     path('delete/<int:pk>/', views.removeToCart_view),
     path('order/', views.order_View),
     path('accounts/', include('allauth.urls')),

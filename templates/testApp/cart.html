@@ -1,93 +1,98 @@
 {% extends "testApp/base.html"%}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-
-    {% block body_block %}
-    <div class="container" align='right'>
-      <p>LOGIN ID:{{user.id}}</p>
-      <p>LOGIN NAME:{{user.username|title}}</p>
-      <p>EMAIL:{{user.email}}</p>
-    </div>
-    <form name="InputForm" method="post" action='/cart/'>
-        {% csrf_token %}
-    <div class="container" align="center">
-      <h1>Cart Information</h1><hr>
-      <h2>Total Payable<p class="grandTotal"></p></h2><hr>
-      <table border="5">
-        <thead>
-          <th > PRODUCT ID </th>
-          <th> PRODUCT IMAGE </th>
-          <th> PRODUCT NAME </th>
-          <th> PRODUCT DETAIL </th>
-          <th> PRODUCT PRICE IN RUPEES </th>
-          <th> No. OF PRODUCT</th>
-          <th> Amount</th>
-          <th> REMOVE TO CART </th>
-        </thead>
-        {% for cart in cart %}
-        <tr>
-          <td>{{cart.id}}</td>
-          <td><a><img alt="Image will be uploaded soon" src="{{cart.product.item_image.url}}" height="80px;"/></a></td>
-          <td>{{cart.product.item_name}}</td>
-          <td>{{cart.product.item_detail}}</td>
-          <td id="price_{{cart.id}}">{{cart.product.item_price}}</td>
-          <td>
-              <input class="quantity" id="quantity_{{cart.id}}" type="number" value="1" min="1" max="5"></td>
-          <td>
-            <input id="quantity{{cart.id}}" name="quantity" value="" hidden>
-            <input id="amount{{cart.id}}" name="amount" value="" hidden>
-            <input id="cart_id{{cart.id}}" name="cart_id" value="" hidden>
-            <div id="sub_{{cart.id}}">{{cart.product.item_price}}</div>
-          </td>
-          <td><a href="/delete/{{cart.id}}" class="btn btn-primary">Remove To Cart</a></td>
-        </tr>
-        {% endfor %}
-        <input id="grandTotal" name="grandTotal" value="" hidden>
-        <button class="btn btn-primary btn-lg" type="submit" name="button">PLACE ORDER</button><hr>
-        </form>
-
+   <head>
+      <meta charset="utf-8">
+      <title></title>
+   </head>
+   <body>
+      {% block body_block %}
+      <div class="container" align='right'>
+         <p>LOGIN ID:{{user.id}}</p>
+         <p>LOGIN NAME:{{user.username|title}}</p>
+         <p>EMAIL:{{user.email}}</p>
+      </div>
+      <form name="InputForm" method="post" action='/cart/'>
+         {% csrf_token %}
+         <div class="container" align="center">
+            <h1>Cart Information</h1>
+            <hr>
+            <h2>
+               Total Payable
+               <p class="grandTotal"></p>
+            </h2>
+            <hr>
+            <table border="5">
+               <thead>
+                  <th > PRODUCT ID </th>
+                  <th> PRODUCT IMAGE </th>
+                  <th> PRODUCT NAME </th>
+                  <th> PRODUCT DETAIL </th>
+                  <th> PRODUCT PRICE IN RUPEES </th>
+                  <th> No. OF PRODUCT</th>
+                  <th> Amount</th>
+                  <th> REMOVE TO CART </th>
+               </thead>
+               {% for cart in cart %}
+               <tr>
+                  <td>{{cart.id}}</td>
+                  <td><a><img alt="Image will be uploaded soon" src="{{cart.product.item_image.url}}" height="80px;"/></a></td>
+                  <td>{{cart.product.item_name}}</td>
+                  <td>{{cart.product.item_detail}}</td>
+                  <td id="price_{{cart.id}}">{{cart.product.item_price}}</td>
+                  <td>
+                     <input class="quantity" id="quantity_{{cart.id}}" type="number" value="1" min="1" max="5">
+                  </td>
+                  <td>
+                     <input id="quantity{{cart.id}}" name="quantity" value="" hidden>
+                     <input id="amount{{cart.id}}" name="amount" value="" hidden>
+                     <input id="cart_id{{cart.id}}" name="cart_id" value="" hidden>
+                     <div id="sub_{{cart.id}}">{{cart.product.item_price}}</div>
+                  </td>
+                  <td><a href="/delete/{{cart.id}}" class="btn btn-primary">Remove To Cart</a></td>
+               </tr>
+               {% endfor %}
+               <input id="grandTotal" name="grandTotal" value="" hidden>
+               <button class="btn btn-primary btn-lg" type="submit" name="button">PLACE ORDER</button>
+               <hr>
+      </form>
       </table><hr>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-           $(document).ready(function(){
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script>
+         $(document).ready(function(){
+           update_amounts();
+           $('.quantity').change(function() {
              update_amounts();
-             $('.quantity').change(function() {
-               update_amounts();
-             });
            });
-          function update_amounts()
-          {
-            var sum = 0.0;
-            $('.quantity').each(function() {
-              // debugger;
-              var quantity = parseInt(this.value);
-              var id = this.getAttribute('id');
-              id = id.split('_')[1];
-              var c_id = parseInt(id);
-              var cart_id = "#cart_id"+c_id;
-              var sub_id = "#sub_"+id;
-              var price_id = "#price_"+id;
-              var price = parseFloat($(price_id).text());
-              var amount = (quantity*price);
-              var quantity_id ="#quantity"+id;
-              var amount_id ="#amount"+id;
-              sum+=amount;
-              $(sub_id).text(amount);
-              $(quantity_id).val(quantity);
-              $(amount_id).val(amount);
-              $(cart_id).val(c_id);
-            });
-            //just update the total to sum
-            $('.grandTotal').text(sum);
-            $('#grandTotal').val(sum);
-          };
-    </script>
-    {% endblock %}
-  </body>
+         });
+         function update_amounts()
+         {
+          var sum = 0.0;
+          $('.quantity').each(function() {
+            // debugger;
+            var quantity = parseInt(this.value);
+            var id = this.getAttribute('id');
+            id = id.split('_')[1];
+            var c_id = parseInt(id);
+            var cart_id = "#cart_id"+c_id;
+            var sub_id = "#sub_"+id;
+            var price_id = "#price_"+id;
+            var price = parseFloat($(price_id).text());
+            var amount = (quantity*price);
+            var quantity_id ="#quantity"+id;
+            var amount_id ="#amount"+id;
+            sum+=amount;
+            $(sub_id).text(amount);
+            $(quantity_id).val(quantity);
+            $(amount_id).val(amount);
+            $(cart_id).val(c_id);
+          });
+          //just update the total to sum
+          $('.grandTotal').text(sum);
+          $('#grandTotal').val(sum);
+         };
+      </script>
+      {% endblock %}
+   </body>
 </html>

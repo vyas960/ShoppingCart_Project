@@ -24,3 +24,5 @@ class Order(models.Model):
 	user = models.ForeignKey(User,blank=True, null=True, on_delete=models.CASCADE)
 	quantity=models.IntegerField(default=1)
 	amount=models.FloatField(default=0.0)
+	def __str__(self):
+		return self.product.item_name
