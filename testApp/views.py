@@ -17,7 +17,6 @@ def addToCart_view(request,pk):
 		cart.delete()
 	product=Product.objects.get(pk=pk)
 	cart=Cart.objects.get_or_create(product=product,user=request.user)
-
 	return HttpResponseRedirect(reverse('cart'))
 	# return redirect("/cart")
 
@@ -40,6 +39,7 @@ def cart_view(request):
 		return render(request,'testApp/cart.html',{'cart':cart})
 
 @login_required
+#assasasasasas
 def removeToCart_view(request,pk):
 	cart=Cart.objects.get(pk=pk)
 	cart.delete()
