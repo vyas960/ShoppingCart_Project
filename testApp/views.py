@@ -39,7 +39,6 @@ def cart_view(request):
 		return render(request,'testApp/cart.html',{'cart':cart})
 
 @login_required
-#assasasasasas
 def removeToCart_view(request,pk):
 	cart=Cart.objects.get(pk=pk)
 	cart.delete()
